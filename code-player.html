@@ -1,0 +1,135 @@
+<html>
+<head>
+
+<title>Code Player</title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="jquery-ui/jquery-ui.js"></script>
+    <link href="jquery-ui/jquery-ui.css" rel="stylesheet">
+<style type="text/css">
+   
+    h2
+    {
+        padding:5px;
+    }
+    #header
+    {
+        width:1450px;
+        height:50px;
+        background-color: #f0f1f2;
+    }
+    .b
+    {
+        height:35px;
+        border-radius:5px;
+        background-color: #f0f1f2;
+        border: 1px #869ab8 solid;
+      
+    }
+    #html
+    {
+        width:60px;
+        position:relative;
+        left:270px;
+        bottom:50px;
+    }
+    #css
+    {
+         width:60px;
+        position:relative;
+        left:265px;
+        bottom:50px;
+    }
+    #javascript
+    {
+          width:80px;
+        position:relative;
+        left:260px;
+        bottom:50px;
+    }
+     #output
+    {
+         width:60px;
+        position:relative;
+        left:255px;
+        bottom:50px;
+    }
+    body
+    {
+        margin:0;
+        padding:0;
+    }
+    
+    .highlightedbutton
+    {
+        background-color:grey;
+    }
+    .active
+    {
+        resize:none;
+        background-color:#e6ecf5;
+    
+    }
+    textarea
+    {
+        border-top:none;
+        resize:none;
+    }
+    .panel
+    {
+        width:50%;
+        float:left;
+    }
+   iframe
+    {
+        border:none;
+    }
+    .hidden{
+        display:none;
+    }
+    </style>
+
+</head>
+<body>
+  <div id="header">
+  <h2>CodePlayer</h2>
+      <button id="html" class="b active">HTML</button>
+      <button id="css" class="b">CSS</button>
+      <button id="javascript" class="b">Javascript</button>
+      <button id="output" class="b active">Output</button>
+   </div> 
+   <div id="bodycontainerarea">
+    <textarea id="htmlpanel" class="panel"><p id="para">Hello World!</p></textarea>
+    <textarea id="csspanel" class="hidden panel">p{color:green}</textarea> 
+    <textarea id="javascriptpanel" class="hidden panel">document.getElementById("para").innerHTML= "hello Rob";</textarea>
+    <iframe id="outputpanel" class="panel"></iframe></div>
+    <script type="text/javascript">
+        function update ()
+        {
+    $("iframe").contents().find("html").html("<html> <head> <style type='text/css' >"+$("#csspanel").val()+"</style> </head> <body>"+$("#htmlpanel").val())+"</body> </html>"; 
+            document.getElementById("outputpanel").contentWindow.eval($("#javascriptpanel").val());
+        }
+        $(".b").hover(function()
+                {
+            $(this).addClass("highlightedbutton");
+        },function(){
+            $(this).removeClass("highlightedbutton");
+        });
+        $(".b").click(function(){
+            $(this).toggleClass("active");
+            $(this).removeClass("highlightedbutton");
+            var panelId=$(this).attr("id")+"panel";
+            $("#"+panelId).toggleClass("hidden");
+            var num=4-$(".hidden").length;
+            $(".panel").width(($(window).width()/num)-10);
+        });
+        $(".panel").height($(window).height()-$("#header").height()-10);
+        $(".panel").width(($(window).width()/2)-10);
+       update();
+        $("textarea").on('change keyup paste', function()
+                          {
+            update();
+        })
+    </script>
+    
+</body>
+</html>
